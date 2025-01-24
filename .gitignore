@@ -13,6 +13,8 @@ yarn-error.log*
 
 # dotenv environment variables file
 .env
+.env.*
+!.env.example
 
 # OS-specific files
 .DS_Store
@@ -78,3 +80,42 @@ Icon
 ._*
 .Spotlight-V100
 .Trashes
+
+# Spendrific specific ignores
+selenium_profile/
+**/selenium_profile/
+chase_transactions.csv
+*.csv
+debug_*.png
+login_*.png
+payment_*.png
+*.png
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Sensitive data files
+credentials.json
+config.json
+secrets.yaml
+*.key
+*.pem
+*.cer
+*.p12
+
+# HTML dumps and debug files
+HTMLDumps/
+**/loginPageSource.html
+**/debug_*.html
+
+# Xcode
+xcuserdata/
+*.xcuserstate
+project.xcworkspace/
+xcuserdata/
+DerivedData/
+*.hmap
+*.ipa
+*.dSYM.zip
+*.dSYM
