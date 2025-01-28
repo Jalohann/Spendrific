@@ -2,7 +2,7 @@ import SwiftUI
 
 struct OnboardingView: View {
     @State private var showServerConfig = false
-    @AppStorage("hasCompletedOnboarding") private var hasCompletedOnboarding = false
+    @State private var hasCompletedOnboarding = false
     
     var body: some View {
         if !hasCompletedOnboarding {
@@ -59,8 +59,11 @@ struct OnboardingView: View {
                 }
             }
             .padding()
+            .onAppear {
+                hasCompletedOnboarding = UserDefaults.standard.bool(forKey: "hasCompletedOnboarding")
+            }
         } else {
-            ContentView()
+            DashboardView()
         }
     }
 }
@@ -111,6 +114,7 @@ struct ServerConfigView: View {
         Task {
             do {
                 try await NetworkManager.shared.verifyServerConnection()
+                UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
                 hasCompletedOnboarding = true
                 dismiss()
             } catch {

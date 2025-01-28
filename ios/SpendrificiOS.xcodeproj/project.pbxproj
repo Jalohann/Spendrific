@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		460BEDC32D4404B600466D3D /* KeychainSwift in Frameworks */ = {isa = PBXBuildFile; productRef = 460BEDC22D4404B600466D3D /* KeychainSwift */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		464583562D4319930012F95C /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -65,6 +69,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				460BEDC32D4404B600466D3D /* KeychainSwift in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -125,6 +130,7 @@
 			);
 			name = SpendrificiOS;
 			packageProductDependencies = (
+				460BEDC22D4404B600466D3D /* KeychainSwift */,
 			);
 			productName = SpendrificiOS;
 			productReference = 464583432D4319920012F95C /* SpendrificiOS.app */;
@@ -208,6 +214,9 @@
 			);
 			mainGroup = 4645833A2D4319920012F95C;
 			minimizedProjectReferenceProxies = 1;
+			packageReferences = (
+				460BEDC12D4404B600466D3D /* XCRemoteSwiftPackageReference "keychain-swift" */,
+			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 464583442D4319920012F95C /* Products */;
 			projectDirPath = "";
@@ -587,6 +596,25 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCRemoteSwiftPackageReference section */
+		460BEDC12D4404B600466D3D /* XCRemoteSwiftPackageReference "keychain-swift" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/evgenyneu/keychain-swift.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 24.0.0;
+			};
+		};
+/* End XCRemoteSwiftPackageReference section */
+
+/* Begin XCSwiftPackageProductDependency section */
+		460BEDC22D4404B600466D3D /* KeychainSwift */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 460BEDC12D4404B600466D3D /* XCRemoteSwiftPackageReference "keychain-swift" */;
+			productName = KeychainSwift;
+		};
+/* End XCSwiftPackageProductDependency section */
 	};
 	rootObject = 4645833B2D4319920012F95C /* Project object */;
 }

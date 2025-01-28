@@ -80,6 +80,34 @@ class Browser:
                 print("Could not save screenshot")
             raise
 
+    def get_card_info(self):
+        """Get and store card name and last digits"""
+        try:
+            print("\nGetting card information...")
+            # Wait for dashboard to load
+            time.sleep(5)
+            
+            # Find the container element first
+            print("Looking for card info container...")
+            container = WebDriverWait(self.driver, 10).until(
+                EC.presence_of_element_located((By.CSS_SELECTOR, ".mds-mt-6"))
+            )
+            
+            # Get the text content which should include the card info
+            card_info = container.text
+            print(f"Found container text: {card_info}")
+            
+            # Save to file
+            with open('cardInfo', 'w') as f:
+                f.write(card_info)
+            print(f"Card information saved to cardInfo file")
+            
+        except Exception as e:
+            print(f"Error getting card information: {e}")
+            self.driver.save_screenshot("card_info_error.png")
+            print("Saved error screenshot to card_info_error.png")
+            raise
+
     def open(self, url="https://secure.chase.com"):
         """Open Chase website and handle initial loading"""
         self.driver.get(url)
@@ -87,6 +115,7 @@ class Browser:
         time.sleep(5)  # Delay for page to stabilize
         self.login()
         time.sleep(5)
+        self.get_card_info()  # Get card info after login
         print("Navigating to transactions page...")
         self.navigate_to_transactions()
         print("Waiting for page to load...")

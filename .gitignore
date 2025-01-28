@@ -109,13 +109,53 @@ HTMLDumps/
 **/loginPageSource.html
 **/debug_*.html
 
+# Server directory
+server/
+**/server/
+
 # Xcode
+## User settings
 xcuserdata/
 *.xcuserstate
-project.xcworkspace/
-xcuserdata/
-DerivedData/
-*.hmap
+*.xcuserdatad/
+
+## App packaging
 *.ipa
 *.dSYM.zip
 *.dSYM
+
+## Playgrounds
+timeline.xctimeline
+playground.xcworkspace
+
+## Swift Package Manager
+.build/
+Packages/
+Package.pins
+Package.resolved
+*.xcodeproj
+!*.xcodeproj/project.pbxproj
+
+## CocoaPods
+Pods/
+*.xcworkspace
+
+## Carthage
+Carthage/Build/
+
+## fastlane
+fastlane/report.xml
+fastlane/Preview.html
+fastlane/screenshots/**/*.png
+fastlane/test_output
+
+## App Code and other JetBrains IDEs
+.idea/
+
+## Other
+*.moved-aside
+*.xccheckout
+*.xcscmblueprint
+*.xcuserstate
+DerivedData/
+.swiftpm/

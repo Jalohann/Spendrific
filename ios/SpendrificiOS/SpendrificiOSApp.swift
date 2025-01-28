@@ -4,7 +4,11 @@ import SwiftUI
 struct SpendrificiOSApp: App {
     var body: some Scene {
         WindowGroup {
-            OnboardingView()
+            if UserDefaults.standard.bool(forKey: "hasCompletedOnboarding") {
+                DashboardView()
+            } else {
+                OnboardingView()
+            }
         }
     }
 } 
