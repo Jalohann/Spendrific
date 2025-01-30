@@ -18,21 +18,43 @@ enum NetworkError: Error {
 class NetworkManager {
     static let shared = NetworkManager()
     private var baseURL: String
+    private let session: URLSession
     
     private init() {
         let serverAddress = AppStorage.shared.serverAddress
-        baseURL = "http://\(serverAddress)"
+        baseURL = "https://\(serverAddress)"
+        
+        // Create custom URLSession configuration
+        let configuration = URLSessionConfiguration.default
+        configuration.tlsMinimumSupportedProtocolVersion = .TLSv12
+        configuration.tlsMaximumSupportedProtocolVersion = .TLSv13
+        
+        // Create custom URLSession with TLS trust handling
+        session = URLSession(configuration: configuration, delegate: CustomURLSessionDelegate(), delegateQueue: nil)
+    }
+    
+    // Add URLSessionDelegate to handle server trust
+    class CustomURLSessionDelegate: NSObject, URLSessionDelegate {
+        func urlSession(_ session: URLSession, didReceive challenge: URLAuthenticationChallenge, completionHandler: @escaping (URLSession.AuthChallengeDisposition, URLCredential?) -> Void) {
+            guard let serverTrust = challenge.protectionSpace.serverTrust else {
+                completionHandler(.cancelAuthenticationChallenge, nil)
+                return
+            }
+            
+            let credential = URLCredential(trust: serverTrust)
+            completionHandler(.useCredential, credential)
+        }
     }
     
     func updateBaseURL(server: String, port: String) {
         let address = "\(server):\(port)"
         AppStorage.shared.serverAddress = address
-        baseURL = "http://\(address)"
+        baseURL = "https://\(address)"
     }
     
     func fetchTransactions() async throws -> [Transaction] {
         let url = URL(string: "\(baseURL)/transactions")!
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await session.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.serverError("Invalid response")
@@ -58,7 +80,7 @@ class NetworkManager {
         var request = URLRequest(url: url)
         request.httpMethod = "POST"
         
-        let (_, response) = try await URLSession.shared.data(for: request)
+        let (_, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
             throw NetworkError.serverError("Failed to fetch transactions")
@@ -70,7 +92,7 @@ class NetworkManager {
             throw NetworkError.invalidURL
         }
         
-        let (data, response) = try await URLSession.shared.data(from: url)
+        let (data, response) = try await session.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse else {
             throw NetworkError.serverError("Invalid response from server")
@@ -142,7 +164,7 @@ class NetworkManager {
         
         request.httpBody = try JSONEncoder().encode(payload)
         
-        let (_, response) = try await URLSession.shared.data(for: request)
+        let (_, response) = try await session.data(for: request)
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {
             throw NetworkError.serverError("Failed to submit bill payment")
@@ -151,7 +173,7 @@ class NetworkManager {
     
     func verifyServerConnection() async throws {
         let url = URL(string: "\(baseURL)/health")!
-        let (_, response) = try await URLSession.shared.data(from: url)
+        let (_, response) = try await session.data(from: url)
         
         guard let httpResponse = response as? HTTPURLResponse,
               httpResponse.statusCode == 200 else {

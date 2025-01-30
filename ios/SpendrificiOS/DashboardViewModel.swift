@@ -199,10 +199,11 @@ class DashboardViewModel: ObservableObject {
             try await NetworkManager.shared.submitBillPayment(transactions: [transaction])
             try await Task.sleep(nanoseconds: 1_000_000_000) // Add 1 second delay for animation
             markAsPaid(transaction)
-            // Refresh data after successful payment
-            if let budgetId = selectedBudget?.id {
-                await refreshTransactions(budgetId: budgetId)
-            }
+            // Remove automatic refresh after payment
+            // This line was causing the chase script to run again
+            // if let budgetId = selectedBudget?.id {
+            //     await refreshTransactions(budgetId: budgetId)
+            // }
             processingPaymentForId = nil
         } catch {
             self.error = error.localizedDescription
@@ -222,10 +223,11 @@ class DashboardViewModel: ObservableObject {
             for transaction in unpaidTransactions {
                 markAsPaid(transaction)
             }
-            // Refresh data after successful bulk payment
-            if let budgetId = selectedBudget?.id {
-                await refreshTransactions(budgetId: budgetId)
-            }
+            // Remove automatic refresh after bill payment
+            // This line was causing the chase script to run again
+            // if let budgetId = selectedBudget?.id {
+            //     await refreshTransactions(budgetId: budgetId)
+            // }
         } catch {
             self.error = error.localizedDescription
             self.showError = true

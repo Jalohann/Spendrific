@@ -75,6 +75,7 @@ struct ServerConfigView: View {
     @State private var port: String = "5001"
     @State private var showError: Bool = false
     @State private var errorMessage: String = ""
+    @State private var isLoading: Bool = false
     
     var body: some View {
         NavigationView {
@@ -89,8 +90,18 @@ struct ServerConfigView: View {
                 }
                 
                 Section(footer: Text("Enter the address and port of your Flask server")) {
-                    Button("Connect") {
-                        verifyAndConnect()
+                    Button(action: {
+                        Task {
+                            await verifyAndConnect()
+                        }
+                    }) {
+                        if isLoading {
+                            ProgressView()
+                                .frame(maxWidth: .infinity)
+                        } else {
+                            Text("Connect")
+                                .frame(maxWidth: .infinity)
+                        }
                     }
                 }
             }
@@ -100,28 +111,53 @@ struct ServerConfigView: View {
             } message: {
                 Text(errorMessage)
             }
+            .disabled(isLoading)
         }
     }
     
-    private func verifyAndConnect() {
+    private func verifyAndConnect() async {
+        isLoading = true
+        
         // Store server details in UserDefaults
         UserDefaults.standard.set("\(serverAddress):\(port)", forKey: "serverAddress")
         
         // Update NetworkManager base URL
         NetworkManager.shared.updateBaseURL(server: serverAddress, port: port)
         
-        // Verify connection
-        Task {
-            do {
-                try await NetworkManager.shared.verifyServerConnection()
-                UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
-                hasCompletedOnboarding = true
-                dismiss()
-            } catch {
-                showError = true
-                errorMessage = error.localizedDescription
+        do {
+            // Verify connection
+            try await NetworkManager.shared.verifyServerConnection()
+            
+            // Trigger transaction fetch which will run the chase script
+            try await NetworkManager.shared.triggerTransactionFetch()
+            
+            // Poll for transactions with timeout
+            var attempts = 0
+            while attempts < 10 {
+                do {
+                    _ = try await NetworkManager.shared.getTransactions()
+                    // If we get here, transactions are ready
+                    break
+                } catch let error as NetworkError where error.isTransactionsNotReady {
+                    attempts += 1
+                    if attempts >= 10 {
+                        throw error
+                    }
+                    try await Task.sleep(nanoseconds: 2_000_000_000) // 2 second wait between attempts
+                    continue
+                }
             }
+            
+            // Complete onboarding
+            UserDefaults.standard.set(true, forKey: "hasCompletedOnboarding")
+            hasCompletedOnboarding = true
+            dismiss()
+        } catch {
+            showError = true
+            errorMessage = error.localizedDescription
         }
+        
+        isLoading = false
     }
 }
 

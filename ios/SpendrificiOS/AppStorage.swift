@@ -8,6 +8,22 @@ class AppStorage {
     
     private init() {}
     
+    // Add reset function
+    func reset() {
+        // Clear UserDefaults
+        defaults.removeObject(forKey: "userName")
+        defaults.removeObject(forKey: "hasCompletedOnboarding")
+        defaults.removeObject(forKey: "serverAddress")
+        defaults.removeObject(forKey: "ynabBudgetId")
+        defaults.removeObject(forKey: "transactions")
+        
+        // Clear Keychain
+        keychain.delete("ynabToken")
+        
+        // Force defaults to sync
+        defaults.synchronize()
+    }
+    
     // User Settings
     var userName: String {
         get { defaults.string(forKey: "userName") ?? "" }

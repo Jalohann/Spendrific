@@ -62,10 +62,19 @@ struct SettingsView: View {
                     Button("Save") {
                         AppStorage.shared.serverAddress = serverAddress
                         AppStorage.shared.userName = userName
-                        AppStorage.shared.ynabToken = ynabToken
                         showingConfirmation = true
                     }
                     .frame(maxWidth: .infinity)
+                }
+                
+                Section {
+                    Button(role: .destructive, action: {
+                        AppStorage.shared.reset()
+                        dismiss()
+                    }) {
+                        Text("Reset App")
+                            .frame(maxWidth: .infinity)
+                    }
                 }
             }
             .navigationTitle("Settings")
@@ -88,6 +97,8 @@ struct SettingsView: View {
     private func testToken() async {
         isTestingToken = true
         testResult = nil
+        
+        AppStorage.shared.ynabToken = ynabToken
         
         do {
             let budgets = try await YNABService.shared.getBudgets()
