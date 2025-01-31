@@ -37,25 +37,23 @@ Spendrific addresses two critical issues in personal finance:
 
 Here's a visual tour of Spendrific's key features:
 
-### Home Dashboard
-![Home Screen](screenshots/home-screen.png)
+### Onboarding
+![Onboarding](screenshots/home-screen.png)
+The onboarding screen provides a quick overview of what Spendrific is, and how your data is safe and secure.
+
+### Home Screen (Dashboard)
+![Dashboard](screenshots/transactions-list.png)
 The home screen provides a quick overview of your recent transactions and account status, with easy access to all key features.
 
-### Transaction Management
-![Transactions List](screenshots/transactions-list.png)
-View all your transactions in one place, with clear indicators for payment status and transaction details.
-
-### Transaction Details
+### Transaction Categories
 ![Transaction Detail](screenshots/transaction-detail.png)
-Dive deep into individual transactions, adjust amounts (for tips), and manage payment status with ease.
+Dive deep into individual categories, automatically synced to your chosen budgeting app (YNAB Pictured).
 
-### Settings & Preferences
+### Transaction View
 ![Settings Screen](screenshots/settings-screen.png)
-Customize your Spendrific experience and manage notification preferences through an intuitive settings interface.
-
-### Account Setup
+Dive deep into individual transactions, adjust amounts (for tips), and manage payment status with ease.
 ![Account Setup](screenshots/account-setup.png)
-Simple and secure account configuration process to link your credit card and checking account.
+
 
 ## 💡 Benefits
 
