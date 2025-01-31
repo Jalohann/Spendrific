@@ -90,6 +90,7 @@ debug_*.png
 login_*.png
 payment_*.png
 *.png
+!screenshots/*.png
 __pycache__/
 *.pyc
 *.pyo
