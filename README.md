@@ -33,6 +33,30 @@ Spendrific addresses two critical issues in personal finance:
 3. **Bill Pay**: Automatic or manual initiation of bill payments for non-pre-auth charges
 4. **Transaction Management**: View, adjust, and manage all transactions through the iOS app
 
+## 📱 App Screenshots
+
+Here's a visual tour of Spendrific's key features:
+
+### Home Dashboard
+![Home Screen](screenshots/home-screen.png)
+The home screen provides a quick overview of your recent transactions and account status, with easy access to all key features.
+
+### Transaction Management
+![Transactions List](screenshots/transactions-list.png)
+View all your transactions in one place, with clear indicators for payment status and transaction details.
+
+### Transaction Details
+![Transaction Detail](screenshots/transaction-detail.png)
+Dive deep into individual transactions, adjust amounts (for tips), and manage payment status with ease.
+
+### Settings & Preferences
+![Settings Screen](screenshots/settings-screen.png)
+Customize your Spendrific experience and manage notification preferences through an intuitive settings interface.
+
+### Account Setup
+![Account Setup](screenshots/account-setup.png)
+Simple and secure account configuration process to link your credit card and checking account.
+
 ## 💡 Benefits
 
 - Keep credit card rewards and benefits
